@@ -39,7 +39,7 @@ pub trait TableViewItem<H>: Clone + Sized
     fn to_column(&self, column: H) -> String;
 
     /// Method comparing two items via their specified column from type `H`.
-    fn cmp(&self, other: &Self, column: H) -> Ordering where Self: Sized;
+    fn comp(&self, other: &Self, column: H) -> Ordering where Self: Sized;
 
 }
 
@@ -81,7 +81,7 @@ pub trait TableViewItem<H>: Clone + Sized
 ///         }
 ///     }
 ///
-///     fn cmp(&self, other: &Self, column: BasicColumn) -> Ordering where Self: Sized {
+///     fn comp(&self, other: &Self, column: BasicColumn) -> Ordering where Self: Sized {
 ///         match column {
 ///             BasicColumn::Name => self.name.cmp(&other.name),
 ///             BasicColumn::Count => self.count.cmp(&other.count),
@@ -596,10 +596,10 @@ impl<T: TableViewItem<H>, H: Eq + Hash + Copy + Clone + 'static> TableView<T, H>
             let mut rows_to_items = self.rows_to_items.clone();
             rows_to_items.sort_by(|a, b| {
                 if order == Ordering::Less {
-                    self.items[*a].cmp(&self.items[*b], column)
+                    self.items[*a].comp(&self.items[*b], column)
 
                 } else {
-                    self.items[*b].cmp(&self.items[*a], column)
+                    self.items[*b].comp(&self.items[*a], column)
                 }
             });
             self.rows_to_items = rows_to_items;
